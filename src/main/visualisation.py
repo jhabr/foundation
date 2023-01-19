@@ -1,12 +1,12 @@
 import graphviz
 
-from src.main.core import Tensor
+from src.main.core import Node
 
 
-def trace(root: Tensor) -> tuple:
+def trace(root: Node) -> tuple:
     nodes, edges = set(), set()
 
-    def build(node: Tensor):
+    def build(node: Node):
         if node not in nodes:
             nodes.add(node)
 
@@ -18,13 +18,13 @@ def trace(root: Tensor) -> tuple:
     return nodes, edges
 
 
-def draw_dot(root: Tensor) -> graphviz.Digraph:
+def draw_dot(root: Node) -> graphviz.Digraph:
     dot = graphviz.Digraph(format="svg", graph_attr={"rankdir": "LR"})
     nodes, edges = trace(root=root)
 
     for node in nodes:
         uid = str(id(node))
-        dot.node(name=uid, label="{data %.4f}" % (node.data,), shape="record")
+        dot.node(name=uid, label="{%s | data %.4f | grad %.4f}" % (node.label, node.data, node.grad), shape="record")
 
         if node.operation:
             dot.node(name=uid + node.operation, label=node.operation)
