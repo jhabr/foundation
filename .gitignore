@@ -3,3 +3,4 @@ logs
 .idea
 export
 __pycache__
+doctest-output/
