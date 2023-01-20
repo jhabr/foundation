@@ -39,6 +39,7 @@ class Value:
             """
             self.grad += 1.0 * out.grad
             other.grad += 1.0 * out.grad
+
         out._backward = _backward
 
         return out
@@ -61,6 +62,7 @@ class Value:
         def _backward():
             self.grad += other.data * out.grad
             other.grad += self.data * out.grad
+
         out._backward = _backward
 
         return out
@@ -71,6 +73,7 @@ class Value:
 
         def _backward():
             self.grad += (1 - tanh**2) * out.grad
+
         out._backward = _backward
 
         return out
@@ -80,20 +83,22 @@ class Value:
 
         def _backward():
             self.grad += out.data * out.grad  # derivative of e^x == e^x
+
         out._backward = _backward
 
         return out
 
     def __truediv__(self, other: Union[Value, int, float]) -> Value:
         other = other if isinstance(other, Value) else Value(data=other)
-        return self * other ** -1
+        return self * other**-1
 
     def __pow__(self, other: Union[Value, int, float]) -> Value:
         other = other.data if isinstance(other, Value) else other
-        out = Value(data=self.data ** other, children=(self,), operation=f"**{other}")
+        out = Value(data=self.data**other, children=(self,), operation=f"**{other}")
 
         def _backward():
             self.grad += other * (self.data ** (other - 1)) * out.grad
+
         out._backward = _backward
 
         return out
