@@ -82,6 +82,16 @@ class Value:
 
         return out
 
+    def exp(self) -> Value:
+        out = Value(data=math.exp(self.data), children=(self, ), label="exp")
+
+        def _backward():
+            out.grad += self.data * out.grad  # derivative of e^x == e^x
+
+        out._backward = _backward
+
+        return out
+
     def backward(self):
         graph = Graph()
         graph.build_topo(value=self)
