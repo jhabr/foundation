@@ -5,7 +5,6 @@ from src.main.visualisation import draw_dot
 
 
 class VisualisationTests(unittest.TestCase):
-
     def test_visualisation(self):
         a = Value(data=2.0)
         b = Value(data=-3.0)
@@ -18,4 +17,4 @@ class VisualisationTests(unittest.TestCase):
         dot = draw_dot(d)
         self.assertIsNotNone(dot)
 
-        dot.render(directory='doctest-output', view=True)
+        dot.render(directory="doctest-output", view=True)

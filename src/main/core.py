@@ -31,9 +31,7 @@ class Value:
     def __add__(self, other: Union[Value, int, float]) -> Value:
         other = other if isinstance(other, Value) else Value(data=other)
 
-        out = Value(
-            data=self.data + other.data, children=(self, other), operation="+"
-        )
+        out = Value(data=self.data + other.data, children=(self, other), operation="+")
 
         def _backward():
             """
@@ -41,7 +39,6 @@ class Value:
             """
             self.grad += 1.0 * out.grad
             other.grad += 1.0 * out.grad
-
         out._backward = _backward
 
         return out
@@ -59,14 +56,11 @@ class Value:
     def __mul__(self, other: Union[Value, int, float]) -> Value:
         other = other if isinstance(other, Value) else Value(data=other)
 
-        out = Value(
-            data=self.data * other.data, children=(self, other), operation="*"
-        )
+        out = Value(data=self.data * other.data, children=(self, other), operation="*")
 
         def _backward():
             self.grad += other.data * out.grad
             other.grad += self.data * out.grad
-
         out._backward = _backward
 
         return out
@@ -77,33 +71,31 @@ class Value:
 
         def _backward():
             self.grad += (1 - tanh**2) * out.grad
-
         out._backward = _backward
 
         return out
 
     def exp(self) -> Value:
-        out = Value(data=math.exp(self.data), children=(self, ), label="exp")
+        out = Value(data=math.exp(self.data), children=(self,), label="exp")
 
         def _backward():
-            out.grad += self.data * out.grad  # derivative of e^x == e^x
-
+            self.grad += out.data * out.grad  # derivative of e^x == e^x
         out._backward = _backward
 
         return out
 
     def __truediv__(self, other: Union[Value, int, float]) -> Value:
         other = other if isinstance(other, Value) else Value(data=other)
-        return self * other.data**-1
+        # out = Value(self.data * other**-1, children=(self,), label="/")
+        # return out
+        return self * other ** -1
 
-    def __pow__(self, power: Union[Value, int, float]) -> Value:
-        power = power.data if isinstance(power, Value) else power
-
-        out = Value(data=self.data**power, children=(self,), label="**")
+    def __pow__(self, other: Union[Value, int, float]) -> Value:
+        other = other.data if isinstance(other, Value) else other
+        out = Value(data=self.data ** other, children=(self,), label=f"**{other}")
 
         def _backward():
-            out.grad += power * self.data**(power - 1) * out.grad
-
+            self.grad += other * (self.data ** (other - 1)) * out.grad
         out._backward = _backward
 
         return out
@@ -112,7 +104,7 @@ class Value:
         return -1 * self
 
     def __sub__(self, other: Union[Value, int, float]) -> Value:
-        other = other.data if isinstance(other, Value) else other
+        other = other if isinstance(other, Value) else Value(data=other)
         return self + -other
 
     def backward(self):

@@ -90,7 +90,7 @@ class FoundationTest(unittest.TestCase):
         self.assertEqual(0.5, (a / b).data)
 
         b = 4.0
-        self.assertEqual(0.5, (a/b).data)
+        self.assertEqual(0.5, (a / b).data)
 
         b = 4
         self.assertEqual(0.5, (a / b).data)
@@ -102,10 +102,10 @@ class FoundationTest(unittest.TestCase):
         self.assertEqual(16.0, (a**power).data)
 
         power = 4.0
-        self.assertEqual(16.0, (a ** power).data)
+        self.assertEqual(16.0, (a**power).data)
 
         power = 4
-        self.assertEqual(16.0, (a ** power).data)
+        self.assertEqual(16.0, (a**power).data)
 
     def test_subtract(self):
         a = Value(2.0)
