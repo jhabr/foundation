@@ -1,15 +1,15 @@
 import unittest
 
-from src.main.core import Node
+from src.main.core import Value
 from src.main.visualisation import draw_dot
 
 
 class VisualisationTests(unittest.TestCase):
 
     def test_visualisation(self):
-        a = Node(data=2.0)
-        b = Node(data=-3.0)
-        c = Node(data=10.0)
+        a = Value(data=2.0)
+        b = Value(data=-3.0)
+        c = Value(data=10.0)
 
         d = a * b + c
 
