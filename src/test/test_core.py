@@ -67,6 +67,7 @@ class FoundationTest(unittest.TestCase):
 
     def test_rmul(self):
         a = Value(2.0)
+
         b = 2.0 * a
         self.assertEqual(4.0, b.data)
 
@@ -75,6 +76,7 @@ class FoundationTest(unittest.TestCase):
 
     def test_radd(self):
         a = Value(2.0)
+
         b = 2.0 + a
         self.assertEqual(4.0, b.data)
 
@@ -83,10 +85,36 @@ class FoundationTest(unittest.TestCase):
 
     def test_division(self):
         a = Value(2.0)
-        b = Value(4.0)
 
+        b = Value(4.0)
         self.assertEqual(0.5, (a / b).data)
 
         b = 4.0
-
         self.assertEqual(0.5, (a/b).data)
+
+        b = 4
+        self.assertEqual(0.5, (a / b).data)
+
+    def test_power(self):
+        a = Value(2.0)
+        power = Value(4.0)
+
+        self.assertEqual(16.0, (a**power).data)
+
+        power = 4.0
+        self.assertEqual(16.0, (a ** power).data)
+
+        power = 4
+        self.assertEqual(16.0, (a ** power).data)
+
+    def test_subtract(self):
+        a = Value(2.0)
+        b = Value(4.0)
+
+        self.assertEqual(-2.0, (a - b).data)
+
+        b = 4.0
+        self.assertEqual(-2, (a - b).data)
+
+        b = 4
+        self.assertEqual(-2, (a - b).data)

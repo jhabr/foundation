@@ -96,6 +96,25 @@ class Value:
         other = other if isinstance(other, Value) else Value(data=other)
         return self * other.data**-1
 
+    def __pow__(self, power: Union[Value, int, float]) -> Value:
+        power = power.data if isinstance(power, Value) else power
+
+        out = Value(data=self.data**power, children=(self,), label="**")
+
+        def _backward():
+            out.grad += power * self.data**(power - 1) * out.grad
+
+        out._backward = _backward
+
+        return out
+
+    def __neg__(self) -> Value:
+        return -1 * self
+
+    def __sub__(self, other: Union[Value, int, float]) -> Value:
+        other = other.data if isinstance(other, Value) else other
+        return self + -other
+
     def backward(self):
         graph = Graph()
         graph.build_topo(value=self)
