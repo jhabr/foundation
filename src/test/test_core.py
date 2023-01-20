@@ -63,4 +63,20 @@ class FoundationTest(unittest.TestCase):
 
         output.backward()
 
-        self.assertEqual(1.0. output.grad)
+        self.assertEqual(1.0, output.grad)
+
+    def test_rmul(self):
+        a = Value(2.0)
+        b = 2.0 * a
+        self.assertEqual(4.0, b.data)
+
+        b = a * 2.0
+        self.assertEqual(4.0, b.data)
+
+    def test_radd(self):
+        a = Value(2.0)
+        b = 2.0 + a
+        self.assertEqual(4.0, b.data)
+
+        b = a + 2.0
+        self.assertEqual(4.0, b.data)

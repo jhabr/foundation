@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import math
+from typing import Union
 
 
 class Value:
@@ -17,7 +18,19 @@ class Value:
     def __repr__(self) -> str:
         return f"Value(data={self.data})"
 
-    def __add__(self, other: Value) -> Value:
+    def __radd__(self, other: Union[int, float]) -> Value:
+        """
+        Fallback for addition, otherwise this will not work:
+
+        a = Value(2.0)
+        1.0 + a
+        => TypeError: unsupported operand type(s) for +: 'float' and 'Value'
+        """
+        return self * other
+
+    def __add__(self, other: Union[Value, int, float]) -> Value:
+        other = other if isinstance(other, Value) else Value(data=other)
+
         out = Value(
             data=self.data + other.data, children=(self, other), operation="+"
         )
@@ -33,7 +46,19 @@ class Value:
 
         return out
 
-    def __mul__(self, other: Value) -> Value:
+    def __rmul__(self, other: Union[int, float]) -> Value:
+        """
+        Fallback for multiplication, otherwise this will not work:
+
+        a = Value(2.0)
+        1.0 + a
+        => TypeError: unsupported operand type(s) for *: 'float' and 'Value'
+        """
+        return self * other
+
+    def __mul__(self, other: Union[Value, int, float]) -> Value:
+        other = other if isinstance(other, Value) else Value(data=other)
+
         out = Value(
             data=self.data * other.data, children=(self, other), operation="*"
         )
