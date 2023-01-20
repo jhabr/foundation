@@ -1,16 +1,16 @@
 from __future__ import annotations
 
 import math
-from typing import Union
+from typing import Union, Callable
 
 
 class Value:
     def __init__(
-        self, data: float, children: tuple = (), operation: str = "", label: str = ""
+        self, data: float, children: tuple[Value, ...] = (), operation: str = "", label: str = ""
     ) -> None:
         self.data = data
         self.grad = 0.0  # derivative of itself with respect to the loss function
-        self._backward = lambda: None
+        self._backward: Callable = lambda: None
         self.children = set(children)
         self.operation = operation
         self.label = label
