@@ -80,3 +80,13 @@ class FoundationTest(unittest.TestCase):
 
         b = a + 2.0
         self.assertEqual(4.0, b.data)
+
+    def test_division(self):
+        a = Value(2.0)
+        b = Value(4.0)
+
+        self.assertEqual(0.5, (a / b).data)
+
+        b = 4.0
+
+        self.assertEqual(0.5, (a/b).data)

@@ -92,6 +92,10 @@ class Value:
 
         return out
 
+    def __truediv__(self, other: Union[Value, int, float]) -> Value:
+        other = other if isinstance(other, Value) else Value(data=other)
+        return self * other.data**-1
+
     def backward(self):
         graph = Graph()
         graph.build_topo(value=self)
