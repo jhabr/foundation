@@ -6,7 +6,11 @@ from typing import Union, Callable
 
 class Value:
     def __init__(
-        self, data: float, children: tuple[Value, ...] = (), operation: str = "", label: str = ""
+        self,
+        data: float,
+        children: tuple[Value, ...] = (),
+        operation: str = "",
+        label: str = "",
     ) -> None:
         self.data = data
         self.grad = 0.0  # derivative of itself with respect to the loss function
