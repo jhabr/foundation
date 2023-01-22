@@ -28,9 +28,12 @@ class Neuron:
         out = activation.tanh()
         return out
 
+    def parameters(self) -> list[Value]:
+        return self.w + [self.b]
+
 
 class Layer:
-    def __init__(self, no_inputs: int, no_outputs: int) -> None:
+    def __init__(self, no_inputs: int, no_outputs: int, name: str = "Layer") -> None:
         """
         Layer of neurons.
 
@@ -39,12 +42,18 @@ class Layer:
                 no of inputs x into a neuron
             no_outputs: int
                 no of output neurons that this layer produces
+            name: str
+                the name of the layer
         """
         self.neurons = [Neuron(no_inputs=no_inputs) for _ in range(no_outputs)]
+        self.name = name
 
     def __call__(self, x: list[float]) -> list[Value]:
         outs = [neuron(x) for neuron in self.neurons]
         return outs
+
+    def parameters(self) -> list[Value]:
+        return [param for neuron in self.neurons for param in neuron.parameters()]
 
 
 class MLP:
@@ -72,3 +81,15 @@ class MLP:
         for layer in self.layers:
             x = layer(x)
         return x
+
+    def parameters(self) -> list[Value]:
+        return [param for layer in self.layers for param in layer.parameters()]
+
+    def summary(self) -> None:
+        print("===== Model Summary =====")
+
+        for index, layer in enumerate(self.layers):
+            print(f"{index + 1}. layer: {layer}: {len(layer.parameters())} params")
+
+        print("=========================")
+        print(f"Total parameters: {len(self.parameters())}")
