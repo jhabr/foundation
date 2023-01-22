@@ -21,7 +21,9 @@ class Neuron:
         self.b = Value(data=random.uniform(-1, 1))
 
     def __call__(self, x: list[float]) -> Value:
-        assert len(x) == len(self.w), f"input length of x ({len(x)}) must be equal to number of neuron inputs ({len(self.w)})"
+        assert len(x) == len(
+            self.w
+        ), f"input length of x ({len(x)}) must be equal to number of neuron inputs ({len(self.w)})"
         # activation = w * x + b; sum can start at b
         activation = sum((w_i * x_i for w_i, x_i in zip(self.w, x)), start=self.b)
         # pass through non-linearity => tanh
@@ -93,3 +95,47 @@ class MLP:
 
         print("=========================")
         print(f"Total parameters: {len(self.parameters())}")
+
+    def fit(self, x: list[list[float]], y: list[float], lr: float, epochs: int) -> dict:
+        """
+        Performs training loop - gradient descent
+
+        Parameters
+            x: list[list[float]]
+                the input values to be fittet
+            y: list[float]
+                the expected target values (labels)
+            lr: float
+                the learning rate aka step size
+            epochs: int
+                no of epochs (full x iterations)
+
+        Returns
+            history: dict
+                the learning history containing loss
+        """
+        history = {"epochs": {}}
+
+        for i in range(epochs):
+            # forward pass
+            y_preds = [self(x_i) for x_i in x]
+
+            # zero grad
+            for param in self.parameters():
+                param.grad = 0.0
+
+            # mse loss
+            loss = sum([(y_pred[0] - y_i) ** 2 for y_pred, y_i in zip(y_preds, y)])
+            history["epochs"][i] = {"loss": loss.data}
+
+            print(f"iteration {i} loss: {loss.data}")
+
+            # backward pass
+            loss.backward()
+
+            # update of weights and biases
+            for param in self.parameters():
+                # modify the gradient by a small step size in the direction of the gradient
+                param.data += -1 * lr * param.grad
+
+        return history

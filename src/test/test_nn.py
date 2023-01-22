@@ -20,7 +20,7 @@ class NNTests(unittest.TestCase):
         self.assertLessEqual(out.data, 1)
         self.assertGreaterEqual(out.data, -1)
 
-        self.assertEqual(2+1, len(n.parameters()))  # 2 weights, 1 bias
+        self.assertEqual(2 + 1, len(n.parameters()))  # 2 weights, 1 bias
 
     def test_layer(self):
         layer = Layer(no_inputs=2, no_outputs=2)
@@ -28,7 +28,7 @@ class NNTests(unittest.TestCase):
         outs = layer(x)
         self.assertEqual(2, len(outs))
 
-        self.assertEqual(4+2, len(layer.parameters()))  # 4 weights, 2 biases
+        self.assertEqual(4 + 2, len(layer.parameters()))  # 4 weights, 2 biases
 
     def test_mlp(self):
         mlp = MLP(no_inputs=2, no_layer_outputs=[4, 4, 1])
