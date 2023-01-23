@@ -3,7 +3,16 @@ import random
 from src.main.core import Value
 
 
-class Neuron:
+class Module:
+    def zero_grad(self) -> None:
+        for param in self.parameters():
+            param.grad = 0.0
+
+    def parameters(self) -> list[Value]:
+        return []
+
+
+class Neuron(Module):
     def __init__(self, no_inputs: int) -> None:
         """
         The single neuron computation unit
@@ -34,7 +43,7 @@ class Neuron:
         return self.w + [self.b]
 
 
-class Layer:
+class Layer(Module):
     def __init__(self, no_inputs: int, no_outputs: int, name: str = "Layer") -> None:
         """
         Layer of neurons.
@@ -58,7 +67,7 @@ class Layer:
         return [param for neuron in self.neurons for param in neuron.parameters()]
 
 
-class MLP:
+class MLP(Module):
     def __init__(self, no_inputs: int, no_layer_outputs: list[int]) -> None:
         """
         Multi-layer perceptron
@@ -121,8 +130,7 @@ class MLP:
             y_preds = [self(x_i) for x_i in x]
 
             # zero grad
-            for param in self.parameters():
-                param.grad = 0.0
+            self.zero_grad()
 
             # mse loss
             loss = sum([(y_pred[0] - y_i) ** 2 for y_pred, y_i in zip(y_preds, y)])
