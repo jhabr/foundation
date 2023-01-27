@@ -25,9 +25,9 @@ Output:
 
 ```bash
 ===== Model Summary =====
-1. Dense <src.main.nn.Layer object at 0x13ff13cd0>: 16 params
-2. Dense <src.main.nn.Layer object at 0x13ff100a0>: 20 params
-3. Dense <src.main.nn.Layer object at 0x13ff12f80>: 5 params
+1. Dense Layer of 4 Tanh-Neurons: 16 params
+2. Dense Layer of 4 Tanh-Neurons: 20 params
+3. Dense Layer of 1 Tanh-Neurons: 5 params
 =========================
 Total parameters: 41
 ```
@@ -64,3 +64,8 @@ Predictions:
  [Scalar(data=0.9442682694431568)]]
 ```
 
+Model Graph:
+```python
+draw_graph(predictions)
+```
+![foundation](assets/graph.svg)
