@@ -1,7 +1,7 @@
 import unittest
 
 from src.main.core import Scalar
-from src.main.visualisation import draw_dot
+from src.main.visualisation import draw_graph
 
 
 class VisualisationTests(unittest.TestCase):
@@ -14,7 +14,7 @@ class VisualisationTests(unittest.TestCase):
 
         self.assertEqual(4.0, d.data)
 
-        dot = draw_dot(d)
+        dot = draw_graph(d)
         self.assertIsNotNone(dot)
 
         dot.render(directory="doctest-output", view=True)

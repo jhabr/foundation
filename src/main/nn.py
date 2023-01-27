@@ -28,6 +28,7 @@ class Neuron(Module):
         self.w = [Scalar(data=random.uniform(-1, 1)) for _ in range(no_inputs)]
         # bias == over trigger happiness of this neuron
         self.b = Scalar(data=random.uniform(-1, 1))
+        self.name = "Tanh-Neuron"
 
     def __call__(self, x: list[float]) -> Scalar:
         assert len(x) == len(
@@ -38,6 +39,9 @@ class Neuron(Module):
         # pass through non-linearity => tanh
         out = activation.tanh()
         return out
+
+    def __repr__(self) -> str:
+        return f"{self.name}({len(self.w)})"
 
     def parameters(self) -> list[Scalar]:
         return self.w + [self.b]
@@ -62,6 +66,9 @@ class Layer(Module):
     def __call__(self, x: list[float]) -> list[Scalar]:
         outs = [neuron(x) for neuron in self.neurons]
         return outs
+
+    def __repr__(self) -> str:
+        return f"Layer of {len(self.neurons)} {self.neurons[0].name}s"
 
     def parameters(self) -> list[Scalar]:
         return [param for neuron in self.neurons for param in neuron.parameters()]
@@ -105,6 +112,9 @@ class MLP(Module):
         print("=========================")
         print(f"Total parameters: {len(self.parameters())}")
 
+    def forward(self, x: list[list[float]]) -> list[list[Scalar]]:
+        return [self(x_i) for x_i in x]
+
     def fit(self, x: list[list[float]], y: list[float], lr: float, epochs: int) -> dict:
         """
         Performs training loop - gradient descent
@@ -127,7 +137,7 @@ class MLP(Module):
 
         for i in range(epochs):
             # forward pass
-            y_preds = [self(x_i) for x_i in x]
+            y_preds = self.forward(x)
 
             # zero grad
             self.zero_grad()

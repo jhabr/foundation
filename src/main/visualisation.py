@@ -18,7 +18,7 @@ def trace(root: Scalar) -> tuple:
     return nodes, edges
 
 
-def draw_dot(root: Scalar) -> graphviz.Digraph:
+def draw_graph(root: Scalar) -> graphviz.Digraph:
     dot = graphviz.Digraph(format="svg", graph_attr={"rankdir": "LR"})
     nodes, edges = trace(root=root)
 

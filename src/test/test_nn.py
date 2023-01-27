@@ -21,6 +21,8 @@ class NNTests(unittest.TestCase):
 
         self.assertEqual(2 + 1, len(n.parameters()))  # 2 weights, 1 bias
 
+        self.assertLessEqual("TanhNeuron(2)", str(n))
+
     def test_layer(self):
         layer = Layer(no_inputs=2, no_outputs=2)
         x = [2.0, 3.0]
