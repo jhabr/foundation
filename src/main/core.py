@@ -83,7 +83,7 @@ class Value:
         return out
 
     def relu(self) -> Value:
-        out = Value(data=max(0, self.data), children=(self,), operation="relu")
+        out = Value(data=0 if self.data < 0 else self.data, children=(self,), operation="relu")
 
         def _backward():
             self.grad += (self.data > 0) * out.grad
