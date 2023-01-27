@@ -44,7 +44,7 @@ class Neuron(Module):
 
 
 class Layer(Module):
-    def __init__(self, no_inputs: int, no_outputs: int, name: str = "Layer") -> None:
+    def __init__(self, no_inputs: int, no_outputs: int, name: str = "Dense") -> None:
         """
         Layer of neurons.
 
@@ -100,7 +100,7 @@ class MLP(Module):
         print("===== Model Summary =====")
 
         for index, layer in enumerate(self.layers):
-            print(f"{index + 1}. layer: {layer}: {len(layer.parameters())} params")
+            print(f"{index + 1}. {layer.name} {layer}: {len(layer.parameters())} params")
 
         print("=========================")
         print(f"Total parameters: {len(self.parameters())}")
