@@ -4,11 +4,11 @@ import math
 from typing import Union, Callable
 
 
-class Value:
+class Scalar:
     def __init__(
         self,
         data: float,
-        children: tuple[Value, ...] = (),
+        children: tuple[Scalar, ...] = (),
         operation: str = "",
         label: str = "",
     ) -> None:
@@ -20,9 +20,9 @@ class Value:
         self.label = label
 
     def __repr__(self) -> str:
-        return f"Value(data={self.data})"
+        return f"Scalar(data={self.data})"
 
-    def __radd__(self, other: Union[int, float]) -> Value:
+    def __radd__(self, other: Union[int, float]) -> Scalar:
         """
         Fallback for addition, otherwise this will not work:
 
@@ -32,10 +32,10 @@ class Value:
         """
         return self * other
 
-    def __add__(self, other: Union[Value, int, float]) -> Value:
-        other = other if isinstance(other, Value) else Value(data=other)
+    def __add__(self, other: Union[Scalar, int, float]) -> Scalar:
+        other = other if isinstance(other, Scalar) else Scalar(data=other)
 
-        out = Value(data=self.data + other.data, children=(self, other), operation="+")
+        out = Scalar(data=self.data + other.data, children=(self, other), operation="+")
 
         def _backward():
             """
@@ -48,7 +48,7 @@ class Value:
 
         return out
 
-    def __rmul__(self, other: Union[int, float]) -> Value:
+    def __rmul__(self, other: Union[int, float]) -> Scalar:
         """
         Fallback for multiplication, otherwise this will not work:
 
@@ -58,10 +58,10 @@ class Value:
         """
         return self * other
 
-    def __mul__(self, other: Union[Value, int, float]) -> Value:
-        other = other if isinstance(other, Value) else Value(data=other)
+    def __mul__(self, other: Union[Scalar, int, float]) -> Scalar:
+        other = other if isinstance(other, Scalar) else Scalar(data=other)
 
-        out = Value(data=self.data * other.data, children=(self, other), operation="*")
+        out = Scalar(data=self.data * other.data, children=(self, other), operation="*")
 
         def _backward():
             self.grad += other.data * out.grad
@@ -71,9 +71,9 @@ class Value:
 
         return out
 
-    def tanh(self) -> Value:
+    def tanh(self) -> Scalar:
         tanh = (math.exp(2 * self.data) - 1) / (math.exp(2 * self.data) + 1)
-        out = Value(data=tanh, children=(self,), operation="tanh")
+        out = Scalar(data=tanh, children=(self,), operation="tanh")
 
         def _backward():
             self.grad += (1 - tanh**2) * out.grad
@@ -82,8 +82,10 @@ class Value:
 
         return out
 
-    def relu(self) -> Value:
-        out = Value(data=0 if self.data < 0 else self.data, children=(self,), operation="relu")
+    def relu(self) -> Scalar:
+        out = Scalar(
+            data=0 if self.data < 0 else self.data, children=(self,), operation="relu"
+        )
 
         def _backward():
             self.grad += (self.data > 0) * out.grad
@@ -92,8 +94,8 @@ class Value:
 
         return out
 
-    def exp(self) -> Value:
-        out = Value(data=math.exp(self.data), children=(self,), operation="exp")
+    def exp(self) -> Scalar:
+        out = Scalar(data=math.exp(self.data), children=(self,), operation="exp")
 
         def _backward():
             self.grad += out.data * out.grad  # derivative of e^x == e^x
@@ -102,13 +104,13 @@ class Value:
 
         return out
 
-    def __truediv__(self, other: Union[Value, int, float]) -> Value:
-        other = other if isinstance(other, Value) else Value(data=other)
+    def __truediv__(self, other: Union[Scalar, int, float]) -> Scalar:
+        other = other if isinstance(other, Scalar) else Scalar(data=other)
         return self * other**-1
 
-    def __pow__(self, other: Union[Value, int, float]) -> Value:
-        other = other.data if isinstance(other, Value) else other
-        out = Value(data=self.data**other, children=(self,), operation=f"**{other}")
+    def __pow__(self, other: Union[Scalar, int, float]) -> Scalar:
+        other = other.data if isinstance(other, Scalar) else other
+        out = Scalar(data=self.data**other, children=(self,), operation=f"**{other}")
 
         def _backward():
             self.grad += other * (self.data ** (other - 1)) * out.grad
@@ -117,11 +119,11 @@ class Value:
 
         return out
 
-    def __neg__(self) -> Value:
+    def __neg__(self) -> Scalar:
         return -1 * self
 
-    def __sub__(self, other: Union[Value, int, float]) -> Value:
-        other = other if isinstance(other, Value) else Value(data=other)
+    def __sub__(self, other: Union[Scalar, int, float]) -> Scalar:
+        other = other if isinstance(other, Scalar) else Scalar(data=other)
         return self + -other
 
     def backward(self):
@@ -139,7 +141,7 @@ class Graph:
         self.topo = []
         self.visited = set()
 
-    def build_topo(self, value: Value) -> None:
+    def build_topo(self, value: Scalar) -> None:
         if value not in self.visited:
             self.visited.add(value)
 

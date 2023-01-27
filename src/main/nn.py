@@ -1,6 +1,6 @@
 import random
 
-from src.main.core import Value
+from src.main.core import Scalar
 
 
 class Module:
@@ -8,7 +8,7 @@ class Module:
         for param in self.parameters():
             param.grad = 0.0
 
-    def parameters(self) -> list[Value]:
+    def parameters(self) -> list[Scalar]:
         return []
 
 
@@ -25,11 +25,11 @@ class Neuron(Module):
             None
         """
         # random initialization of weights for all inputs x_0...x_no_inputs
-        self.w = [Value(data=random.uniform(-1, 1)) for _ in range(no_inputs)]
+        self.w = [Scalar(data=random.uniform(-1, 1)) for _ in range(no_inputs)]
         # bias == over trigger happiness of this neuron
-        self.b = Value(data=random.uniform(-1, 1))
+        self.b = Scalar(data=random.uniform(-1, 1))
 
-    def __call__(self, x: list[float]) -> Value:
+    def __call__(self, x: list[float]) -> Scalar:
         assert len(x) == len(
             self.w
         ), f"input length of x ({len(x)}) must be equal to number of neuron inputs ({len(self.w)})"
@@ -39,7 +39,7 @@ class Neuron(Module):
         out = activation.tanh()
         return out
 
-    def parameters(self) -> list[Value]:
+    def parameters(self) -> list[Scalar]:
         return self.w + [self.b]
 
 
@@ -59,11 +59,11 @@ class Layer(Module):
         self.neurons = [Neuron(no_inputs=no_inputs) for _ in range(no_outputs)]
         self.name = name
 
-    def __call__(self, x: list[float]) -> list[Value]:
+    def __call__(self, x: list[float]) -> list[Scalar]:
         outs = [neuron(x) for neuron in self.neurons]
         return outs
 
-    def parameters(self) -> list[Value]:
+    def parameters(self) -> list[Scalar]:
         return [param for neuron in self.neurons for param in neuron.parameters()]
 
 
@@ -88,12 +88,12 @@ class MLP(Module):
             for i in range(len(no_layer_outputs))
         ]
 
-    def __call__(self, x: list[float]) -> list[Value]:
+    def __call__(self, x: list[float]) -> list[Scalar]:
         for layer in self.layers:
             x = layer(x)
         return x
 
-    def parameters(self) -> list[Value]:
+    def parameters(self) -> list[Scalar]:
         return [param for layer in self.layers for param in layer.parameters()]
 
     def summary(self) -> None:

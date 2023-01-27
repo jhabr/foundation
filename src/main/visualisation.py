@@ -1,12 +1,12 @@
 import graphviz
 
-from src.main.core import Value
+from src.main.core import Scalar
 
 
-def trace(root: Value) -> tuple:
+def trace(root: Scalar) -> tuple:
     nodes, edges = set(), set()
 
-    def build(value: Value):
+    def build(value: Scalar):
         if value not in nodes:
             nodes.add(value)
 
@@ -18,7 +18,7 @@ def trace(root: Value) -> tuple:
     return nodes, edges
 
 
-def draw_dot(root: Value) -> graphviz.Digraph:
+def draw_dot(root: Scalar) -> graphviz.Digraph:
     dot = graphviz.Digraph(format="svg", graph_attr={"rankdir": "LR"})
     nodes, edges = trace(root=root)
 

@@ -1,6 +1,5 @@
 import unittest
 
-from src.main.core import Value
 from src.main.nn import Neuron, Layer, MLP
 
 
