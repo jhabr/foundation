@@ -34,6 +34,13 @@ class FoundationTest(unittest.TestCase):
 
         self.assertEqual(0.7071199874301226, a.tanh().data)
 
+    def test_relu(self):
+        a = Value(data=12)
+        b = Value(data=-12)
+
+        self.assertEqual(12, a.relu().data)
+        self.assertEqual(0, b.relu().data)
+
     def test_backward(self):
         x1 = Value(2.0, label="x1")
         x2 = Value(0.0, label="x2")
