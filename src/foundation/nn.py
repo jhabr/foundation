@@ -3,6 +3,11 @@ import random
 from src.foundation.core import Scalar
 
 
+"""
+Inspired by https://github.com/karpathy/micrograd/tree/master/micrograd
+"""
+
+
 class Module:
     def zero_grad(self) -> None:
         for param in self.parameters():
@@ -107,7 +112,9 @@ class MLP(Module):
         print("===== Model Summary =====")
 
         for index, layer in enumerate(self.layers):
-            print(f"{index + 1}. {layer.name} {layer}: {len(layer.parameters())} params")
+            print(
+                f"{index + 1}. {layer.name} {layer}: {len(layer.parameters())} params"
+            )
 
         print("=========================")
         print(f"Total trainable parameters: {len(self.parameters())}")

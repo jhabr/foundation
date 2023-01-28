@@ -3,6 +3,11 @@ import graphviz
 from src.foundation.core import Scalar
 
 
+"""
+Inspired by https://github.com/karpathy/micrograd/tree/master/micrograd
+"""
+
+
 def trace(root: Scalar) -> tuple:
     nodes, edges = set(), set()
 
