@@ -1,6 +1,6 @@
 # Foundation
 
-An autograd engine for scalar values inspired by the videos of A. Karpathy.
+An autograd engine for scalar values inspired by the [videos](https://youtu.be/VMj-3S1tku0) of A. Karpathy.
 
 ## Example Usage
 
