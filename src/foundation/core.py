@@ -3,7 +3,6 @@ from __future__ import annotations
 import math
 from typing import Union, Callable
 
-
 """
 Inspired by https://github.com/karpathy/micrograd/tree/master/micrograd
 """

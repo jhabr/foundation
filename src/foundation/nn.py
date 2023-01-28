@@ -1,7 +1,7 @@
 import random
 
 from src.foundation.core import Scalar
-
+from src.foundation.optimizers import Optimizer
 
 """
 Inspired by https://github.com/karpathy/micrograd/tree/master/micrograd
@@ -9,9 +9,6 @@ Inspired by https://github.com/karpathy/micrograd/tree/master/micrograd
 
 
 class Module:
-    def zero_grad(self) -> None:
-        for param in self.parameters():
-            param.grad = 0.0
 
     def parameters(self) -> list[Scalar]:
         return []
@@ -122,7 +119,7 @@ class MLP(Module):
     def forward(self, x: list[list[float]]) -> list[list[Scalar]]:
         return [self(x_i) for x_i in x]
 
-    def fit(self, x: list[list[float]], y: list[float], lr: float, epochs: int) -> dict:
+    def fit(self, x: list[list[float]], y: list[float], optimizer: Optimizer, epochs: int) -> dict:
         """
         Performs training loop - gradient descent
 
@@ -131,8 +128,8 @@ class MLP(Module):
                 the input values to be fittet
             y: list[float]
                 the expected target values (labels)
-            lr: float
-                the learning rate aka step size
+            optimizer: Optimizer
+                the optimizer to be used
             epochs: int
                 no of epochs (full x iterations)
 
@@ -140,18 +137,19 @@ class MLP(Module):
             history: dict
                 the learning history containing loss
         """
-        history = {"epochs": {}}
+        history = {"loss": []}
+        optimizer.parameters = self.parameters()
 
         for i in range(epochs):
             # forward pass
             y_preds = self.forward(x)
 
             # zero grad
-            self.zero_grad()
+            optimizer.zero_grad()
 
             # mse loss
             loss = sum([(y_pred[0] - y_i) ** 2 for y_pred, y_i in zip(y_preds, y)])
-            history["epochs"][i] = {"loss": loss.data}
+            history["loss"].append(loss.data)
 
             print(f"epoch {i} loss: {loss.data}")
 
@@ -159,8 +157,6 @@ class MLP(Module):
             loss.backward()
 
             # update of weights and biases
-            for param in self.parameters():
-                # modify the gradient by a small step size in the direction of the gradient
-                param.data += -1 * lr * param.grad
+            optimizer.step()
 
         return history
