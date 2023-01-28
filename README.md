@@ -35,7 +35,7 @@ Total trainable parameters: 41
 ### Training
 
 ```python
-optimizer = SGD(learning_rate=0.0.5)
+optimizer = SGD(learning_rate=0.05)
 history = model.fit(x=xs, y=ys, optimizer=optimizer, epochs=100)
 ```
 
