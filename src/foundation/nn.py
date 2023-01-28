@@ -1,6 +1,6 @@
 import random
 
-from src.foundation.core import Scalar
+from src.foundation.core import Scalar, Vector
 from src.foundation.metrics import mean_squared_error
 from src.foundation.optimizers import Optimizer
 
@@ -11,7 +11,7 @@ Inspired by https://github.com/karpathy/micrograd/tree/master/micrograd
 
 class Module:
 
-    def parameters(self) -> list[Scalar]:
+    def parameters(self) -> Vector:
         return []
 
 
@@ -46,7 +46,7 @@ class Neuron(Module):
     def __repr__(self) -> str:
         return f"{self.name}({len(self.w)})"
 
-    def parameters(self) -> list[Scalar]:
+    def parameters(self) -> Vector:
         return self.w + [self.b]
 
 
@@ -66,14 +66,14 @@ class Layer(Module):
         self.neurons = [Neuron(no_inputs=no_inputs) for _ in range(no_outputs)]
         self.name = name
 
-    def __call__(self, x: list[float]) -> list[Scalar]:
+    def __call__(self, x: list[float]) -> Vector:
         outs = [neuron(x) for neuron in self.neurons]
         return outs
 
     def __repr__(self) -> str:
         return f"Layer of {len(self.neurons)} {self.neurons[0].name}s"
 
-    def parameters(self) -> list[Scalar]:
+    def parameters(self) -> Vector:
         return [param for neuron in self.neurons for param in neuron.parameters()]
 
 
@@ -98,12 +98,12 @@ class MLP(Module):
             for i in range(len(no_layer_outputs))
         ]
 
-    def __call__(self, x: list[float]) -> list[Scalar]:
+    def __call__(self, x: list[float]) -> Vector:
         for layer in self.layers:
             x = layer(x)
         return x
 
-    def parameters(self) -> list[Scalar]:
+    def parameters(self) -> Vector:
         return [param for layer in self.layers for param in layer.parameters()]
 
     def summary(self) -> None:
@@ -117,7 +117,7 @@ class MLP(Module):
         print("=========================")
         print(f"Total trainable parameters: {len(self.parameters())}")
 
-    def forward(self, x: list[list[float]]) -> list[list[Scalar]]:
+    def forward(self, x: list[list[float]]) -> list[Vector]:
         return [self(x_i) for x_i in x]
 
     def fit(self, x: list[list[float]], y: list[float], optimizer: Optimizer, epochs: int) -> dict:

@@ -140,6 +140,9 @@ class Scalar:
             value._backward()
 
 
+Vector = list[Scalar]
+
+
 class Graph:
     def __init__(self) -> None:
         self.topo = []

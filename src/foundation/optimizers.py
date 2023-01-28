@@ -1,9 +1,9 @@
-from src.foundation.core import Scalar
+from src.foundation.core import Scalar, Vector
 
 
 class Optimizer:
 
-    parameters: list[Scalar]
+    parameters: Vector
 
     def __init__(self, learning_rate: float = 0.001) -> None:
         """
