@@ -110,7 +110,7 @@ class MLP(Module):
             print(f"{index + 1}. {layer.name} {layer}: {len(layer.parameters())} params")
 
         print("=========================")
-        print(f"Total parameters: {len(self.parameters())}")
+        print(f"Total trainable parameters: {len(self.parameters())}")
 
     def forward(self, x: list[list[float]]) -> list[list[Scalar]]:
         return [self(x_i) for x_i in x]
@@ -146,7 +146,7 @@ class MLP(Module):
             loss = sum([(y_pred[0] - y_i) ** 2 for y_pred, y_i in zip(y_preds, y)])
             history["epochs"][i] = {"loss": loss.data}
 
-            print(f"iteration {i} loss: {loss.data}")
+            print(f"epoch {i} loss: {loss.data}")
 
             # backward pass
             loss.backward()

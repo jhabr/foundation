@@ -29,7 +29,7 @@ Output:
 2. Dense Layer of 4 Tanh-Neurons: 20 params
 3. Dense Layer of 1 Tanh-Neurons: 5 params
 =========================
-Total parameters: 41
+Total trainable parameters: 41
 ```
 
 ### Training
@@ -40,14 +40,14 @@ history = model.fit(x=xs, y=ys, lr=0.05, epochs=100)
 
 History:
 ```bash
-iteration 0 loss: 2.620456417661833
-iteration 1 loss: 2.5213582195836794
-iteration 2 loss: 2.4216506453173956
-iteration 3 loss: 2.3188650154871064
+epoch 0 loss: 2.620456417661833
+epoch 1 loss: 2.5213582195836794
+epoch 2 loss: 2.4216506453173956
+epoch 3 loss: 2.3188650154871064
 ...
-iteration 97 loss: 0.04385590905419104
-iteration 98 loss: 0.043261094071933195
-iteration 99 loss: 0.042681385481372854
+epoch 97 loss: 0.04385590905419104
+epoch 98 loss: 0.043261094071933195
+epoch 99 loss: 0.042681385481372854
 ```
 
 ### Inference
