@@ -1,5 +1,6 @@
 .ipynb_checkpoints
 logs
+.DS_Store
 .idea
 export
 __pycache__
