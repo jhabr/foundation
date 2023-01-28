@@ -1,6 +1,7 @@
 import random
 
 from src.foundation.core import Scalar
+from src.foundation.metrics import mean_squared_error
 from src.foundation.optimizers import Optimizer
 
 """
@@ -148,7 +149,7 @@ class MLP(Module):
             optimizer.zero_grad()
 
             # mse loss
-            loss = sum([(y_pred[0] - y_i) ** 2 for y_pred, y_i in zip(y_preds, y)])
+            loss = mean_squared_error(y, y_preds)
             history["loss"].append(loss.data)
 
             print(f"epoch {i} loss: {loss.data}")
