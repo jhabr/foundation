@@ -1,6 +1,6 @@
 import unittest
 
-from src.main.nn import Neuron, Layer, MLP
+from src.foundation.nn import Neuron, Layer, MLP
 
 
 class NNTests(unittest.TestCase):

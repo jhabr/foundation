@@ -1,7 +1,7 @@
 import unittest
 
-from src.main.core import Scalar
-from src.main.visualisation import draw_graph
+from src.foundation.core import Scalar
+from src.foundation.visualisation import draw_graph
 
 
 class VisualisationTests(unittest.TestCase):

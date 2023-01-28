@@ -1,6 +1,6 @@
 import unittest
 
-from src.main.core import Scalar
+from src.foundation.core import Scalar
 
 
 class FoundationTest(unittest.TestCase):

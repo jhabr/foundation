@@ -1,6 +1,6 @@
 import graphviz
 
-from src.main.core import Scalar
+from src.foundation.core import Scalar
 
 
 def trace(root: Scalar) -> tuple:

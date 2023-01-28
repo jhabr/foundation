@@ -1,6 +1,6 @@
 import random
 
-from src.main.core import Scalar
+from src.foundation.core import Scalar
 
 
 class Module:
