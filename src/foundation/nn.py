@@ -10,7 +10,6 @@ Inspired by https://github.com/karpathy/micrograd/tree/master/micrograd
 
 
 class Module:
-
     def parameters(self) -> Vector:
         return []
 
@@ -120,7 +119,9 @@ class MLP(Module):
     def forward(self, x: list[list[float]]) -> list[Vector]:
         return [self(x_i) for x_i in x]
 
-    def fit(self, x: list[list[float]], y: list[float], optimizer: Optimizer, epochs: int) -> dict:
+    def fit(
+        self, x: list[list[float]], y: list[float], optimizer: Optimizer, epochs: int
+    ) -> dict:
         """
         Performs training loop - gradient descent
 

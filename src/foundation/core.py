@@ -10,11 +10,11 @@ Inspired by https://github.com/karpathy/micrograd/tree/master/micrograd
 
 class Scalar:
     def __init__(
-            self,
-            data: float,
-            children: tuple[Scalar, ...] = (),
-            operation: str = "",
-            label: str = "",
+        self,
+        data: float,
+        children: tuple[Scalar, ...] = (),
+        operation: str = "",
+        label: str = "",
     ) -> None:
         self.data = data
         self.grad = 0.0  # derivative of itself with respect to the loss function
@@ -80,7 +80,7 @@ class Scalar:
         out = Scalar(data=tanh, children=(self,), operation="tanh")
 
         def _backward():
-            self.grad += (1 - tanh ** 2) * out.grad
+            self.grad += (1 - tanh**2) * out.grad
 
         out._backward = _backward
 
@@ -110,11 +110,11 @@ class Scalar:
 
     def __truediv__(self, other: Union[Scalar, int, float]) -> Scalar:
         other = other if isinstance(other, Scalar) else Scalar(data=other)
-        return self * other ** -1
+        return self * other**-1
 
     def __pow__(self, other: Union[Scalar, int, float]) -> Scalar:
         other = other.data if isinstance(other, Scalar) else other
-        out = Scalar(data=self.data ** other, children=(self,), operation=f"**{other}")
+        out = Scalar(data=self.data**other, children=(self,), operation=f"**{other}")
 
         def _backward():
             self.grad += other * (self.data ** (other - 1)) * out.grad
