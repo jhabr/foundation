@@ -4,18 +4,12 @@ A tiny neural net library for fun and educational purposes inspired by the work 
 
 ## Example Usage
 
+The following code implements a multi-layer perceptron as depicted below:
+
+![foundation](assets/neural_net.jpg)
+Source: https://cs231n.github.io/convolutional-networks
+
 ```python
-# input
-xs = [
-    [1.0, 4.0, -1.0],
-    [2.0, -2.0, 0.5],
-    [0.5, 1.0, 3.0],
-    [3.0, 1.0, -1.0]
-]
-
-# labels aka desired targets
-ys = [1.0, -1.0, -1.0, 1.0]
-
 # multi-layer perceptron with 3 inputs, 3 layers with 4, 4 and 1 neurons
 model = MLP(no_inputs=3, no_layer_outputs=[4, 4, 1])
 model.summary()
@@ -35,6 +29,17 @@ Total trainable parameters: 41
 ### Training
 
 ```python
+# input
+xs = [
+    [1.0, 4.0, -1.0],
+    [2.0, -2.0, 0.5],
+    [0.5, 1.0, 3.0],
+    [3.0, 1.0, -1.0]
+]
+
+# labels aka desired targets
+ys = [1.0, -1.0, -1.0, 1.0]
+
 optimizer = SGD(learning_rate=0.05)
 history = model.fit(x=xs, y=ys, optimizer=optimizer, epochs=200)
 ```
