@@ -44,7 +44,7 @@ class NNTests(unittest.TestCase):
         mlp.summary()
 
     def test_mlp_fit(self):
-        xs = [[2.0, 3.0, -1.0], [3.0, -1.0, 0.5], [0.5, 1.0, 1.0], [1.0, 1.0, -1.0]]
+        xs = [[1.0, 4.0, -1.0], [2.0, -2.0, 0.5], [0.5, 1.0, 3.0], [3.0, 1.0, -1.0]]
 
         # labels aka desired targets
         ys = [1.0, -1.0, -1.0, 1.0]
