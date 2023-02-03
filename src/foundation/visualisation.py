@@ -9,6 +9,17 @@ Inspired by https://github.com/karpathy/micrograd/tree/master/micrograd
 
 
 def trace(root: Scalar) -> tuple:
+    """
+    Trace the computation graph.
+
+    Parameters:
+        root: Scalar
+            The root node of the computation graph.
+
+    Returns:
+        nodes, edges: tuple
+            A tuple of nodes and edges of the computation graph.
+    """
     nodes, edges = set(), set()
 
     def build(value: Scalar):
@@ -24,6 +35,17 @@ def trace(root: Scalar) -> tuple:
 
 
 def draw_graph(root: Scalar) -> graphviz.Digraph:
+    """
+    Draw a graph of the computation graph.
+
+    Parameters:
+        root: Scalar
+            The root node of the computation graph.
+
+    Returns:
+        graph: graphviz.Digraph
+            A graphviz graph of the computation graph.
+    """
     graph = graphviz.Digraph(format="svg", graph_attr={"rankdir": "LR"})
     nodes, edges = trace(root=root)
 
