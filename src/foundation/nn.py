@@ -10,7 +10,17 @@ Inspired by https://github.com/karpathy/micrograd/tree/master/micrograd
 
 
 class Module:
+    """
+    Base class for all neural network modules.
+    """
     def parameters(self) -> Vector:
+        """
+        Returns a list of all parameters of this module.
+
+        Returns:
+             parameters: Vector
+                list of all parameters of this module
+        """
         return []
 
 
@@ -33,6 +43,17 @@ class Neuron(Module):
         self.name = "Tanh-Neuron"
 
     def __call__(self, x: list[float]) -> Scalar:
+        """
+        Forward pass of the neuron.
+
+        Parameters:
+            x: list[float]
+                input vector x
+
+        Returns:
+            out: Scalar
+                output of the neuron
+        """
         assert len(x) == len(
             self.w
         ), f"input length of x ({len(x)}) must be equal to number of neuron inputs ({len(self.w)})"
@@ -43,9 +64,23 @@ class Neuron(Module):
         return out
 
     def __repr__(self) -> str:
+        """
+        Representation of the neuron.
+
+        Returns:
+            representation: str
+                the string representation of the neuron
+        """
         return f"{self.name}({len(self.w)})"
 
     def parameters(self) -> Vector:
+        """
+        Returns a list of all parameters of this neuron.
+
+        Returns:
+            parameters: Vector
+                list of all parameters of this neuron
+        """
         return self.w + [self.b]
 
 
@@ -66,13 +101,38 @@ class Layer(Module):
         self.name = name
 
     def __call__(self, x: list[float]) -> Vector:
+        """
+        Forward pass of the layer.
+
+        Parameters:
+            x: list[float]
+                input vector x
+
+        Returns:
+            outs: Vector
+                output of the layer
+        """
         outs = [neuron(x) for neuron in self.neurons]
         return outs
 
     def __repr__(self) -> str:
+        """
+        Representation of the layer.
+
+        Returns:
+            representation: str
+                the string representation of the layer
+        """
         return f"Layer of {len(self.neurons)} {self.neurons[0].name}s"
 
     def parameters(self) -> Vector:
+        """
+        Returns a list of all parameters of this layer.
+
+        Returns:
+            parameters: Vector
+                list of all parameters of this layer
+        """
         return [param for neuron in self.neurons for param in neuron.parameters()]
 
 
@@ -90,6 +150,9 @@ class MLP(Module):
                 list of no of neurons per layer, e.g.
                     no_layer_outputs = [4, 4, 1]
                     => 2 hidden layers with 4 neurons each, 1 output layer with one neuron
+
+        Returns:
+            None
         """
         sizes = [no_inputs] + no_layer_outputs  # e.g. [3, 4, 4, 1]
         self.layers = [
@@ -98,14 +161,38 @@ class MLP(Module):
         ]
 
     def __call__(self, x: list[float]) -> Vector:
+        """
+        Forward pass of the MLP.
+
+        Parameters:
+            x: list[float]
+                input vector x
+
+        Returns:
+            out: Vector
+                output of the MLP
+        """
         for layer in self.layers:
             x = layer(x)
         return x
 
     def parameters(self) -> Vector:
+        """
+        Returns a list of all parameters of this MLP.
+
+        Returns:
+            parameters: Vector
+                list of all parameters of this MLP
+        """
         return [param for layer in self.layers for param in layer.parameters()]
 
     def summary(self) -> None:
+        """
+        Prints a summary of the model.
+
+        Returns:
+            None
+        """
         print("===== Model Summary =====")
 
         for index, layer in enumerate(self.layers):
@@ -117,6 +204,17 @@ class MLP(Module):
         print(f"Total trainable parameters: {len(self.parameters())}")
 
     def forward(self, x: list[list[float]]) -> list[Vector]:
+        """
+        Forward pass of the MLP.
+
+        Parameters:
+            x: list[list[float]]
+                input vector x
+
+        Returns:
+            out: list[Vector]
+                output of the MLP
+        """
         return [self(x_i) for x_i in x]
 
     def fit(
