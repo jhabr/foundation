@@ -13,6 +13,7 @@ class Module:
     """
     Base class for all neural network modules.
     """
+
     def parameters(self) -> Vector:
         """
         Returns a list of all parameters of this module.

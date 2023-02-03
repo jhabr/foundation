@@ -1,4 +1,4 @@
-from src.foundation.core import Scalar, Vector
+from src.foundation.core import Vector
 
 
 class Optimizer:
