@@ -1,6 +1,6 @@
 # Foundation
 
-A tiny neural net library for fun and educational purposes inspired by the work of A. Karpathy.
+A tiny neural net library built from scratch for fun and educational purposes.
 
 ## Example Usage
 
@@ -78,3 +78,7 @@ Model Graph:
 draw_graph(predictions)
 ```
 ![foundation](assets/graph.svg)
+
+## Credits
+
+Inspired by the work of A. Karpathy: https://github.com/karpathy/micrograd.
